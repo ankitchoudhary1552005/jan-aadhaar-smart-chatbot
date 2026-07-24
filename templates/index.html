@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Jan Aadhaar Smart Chatbot</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="chat-container">
+
+<div class="header">
+
+<h2>🤖 Jan Aadhaar Smart Chatbot</h2>
+
+<p>Welcome, <b>{{ username }}</b> 👋</p>
+
+<div class="top-buttons">
+
+<a href="/dashboard">
+<button>📊 Dashboard</button>
+</a>
+
+<a href="/history">
+<button>📜 History</button>
+</a>
+
+<button onclick="toggleTheme()" id="themeBtn">
+🌙 Dark Mode
+</button>
+
+<button onclick="clearChat()">
+🗑 Clear Chat
+</button>
+
+<a href="/logout">
+    <button>🚪 Logout</button>
+</a>
+
+</div>
+
+</div>
+
+<div id="chat-box"></div>
+
+<p id="typing" style="display:none;">
+🤖 Bot is typing...
+</p>
+
+<div class="input-area">
+
+<input
+type="text"
+id="message"
+placeholder="Ask anything about Jan Aadhaar...">
+
+<button id="micBtn">
+🎤
+</button>
+
+<button onclick="sendMessage()">
+📤 Send
+</button>
+
+</div>
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
