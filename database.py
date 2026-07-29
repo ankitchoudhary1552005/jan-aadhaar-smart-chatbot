@@ -1,22 +1,30 @@
 import sqlite3
 
-def create_database():
-    conn = sqlite3.connect("chatbot.db")
-    cursor = conn.cursor()
+conn = sqlite3.connect("chatbot.db")
+cursor = conn.cursor()
 
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS chats (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT,
-        user_message TEXT,
-        bot_reply TEXT,
-        chat_time TEXT
-    )
-    """)
+# Chat table
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS chats(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL,
+    user_message TEXT NOT NULL,
+    bot_reply TEXT NOT NULL,
+    chat_time TEXT NOT NULL
+)
+""")
 
-    conn.commit()
-    conn.close()
+# Users table
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS users(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    email TEXT UNIQUE,
+    password TEXT NOT NULL
+)
+""")
 
-    print("Database created successfully!")
+conn.commit()
+conn.close()
 
-create_database()
+print("Database created successfully!")

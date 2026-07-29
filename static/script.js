@@ -1,26 +1,31 @@
-// Load chat history + theme
-window.addEventListener("load", function () {
+// -------------------- Load Chat --------------------
 
-    let chatBox = document.getElementById("chat-box");
+window.onload = function () {
 
     let history = localStorage.getItem("chatHistory");
 
     if (history) {
-        chatBox.innerHTML = history;
-        chatBox.scrollTop = chatBox.scrollHeight;
+
+        document.getElementById("chat-box").innerHTML = history;
+
     }
 
-    if (localStorage.getItem("theme") == "dark") {
+    if (localStorage.getItem("theme") === "dark") {
+
         document.body.classList.add("dark-mode");
+
         document.getElementById("themeBtn").innerHTML = "☀ Light Mode";
+
     }
 
-});
+};
 
-// Send Message
+// -------------------- Send Message --------------------
+
 function sendMessage() {
 
     let input = document.getElementById("message");
+
     let message = input.value.trim();
 
     if (message === "") return;
@@ -28,56 +33,65 @@ function sendMessage() {
     let chatBox = document.getElementById("chat-box");
 
     // User Message
+
     chatBox.innerHTML += `
-        <div class="user-message">
-            👤 <b>You:</b><br>${message}
-        </div>
+    <div class="user-message">
+        👤 <b>You:</b><br>${message}
+    </div>
     `;
 
     chatBox.scrollTop = chatBox.scrollHeight;
 
-    localStorage.setItem("chatHistory", chatBox.innerHTML);
-
     input.value = "";
 
-    // Typing...
     document.getElementById("typing").style.display = "block";
 
     fetch("/get", {
+
         method: "POST",
+
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
         },
+
         body: "msg=" + encodeURIComponent(message)
+
     })
+
     .then(response => response.json())
+
     .then(data => {
 
         document.getElementById("typing").style.display = "none";
 
         chatBox.innerHTML += `
-            <div class="bot-message">
-                🤖 <b>Jan Aadhaar Bot:</b><br>${data.reply}
-            </div>
+        <div class="bot-message">
+            🤖 <b>Bot:</b><br>${data.reply}
+        </div>
         `;
-
-        localStorage.setItem("chatHistory", chatBox.innerHTML);
-
-        let speech = new SpeechSynthesisUtterance(data.reply);
-        speech.lang = "en-IN";
-        speechSynthesis.speak(speech);
 
         chatBox.scrollTop = chatBox.scrollHeight;
 
+        localStorage.setItem("chatHistory", chatBox.innerHTML);
+
+        // Voice Output
+
+        let speech = new SpeechSynthesisUtterance(data.reply);
+
+        speech.lang = "en-IN";
+
+        window.speechSynthesis.speak(speech);
+
     })
+
     .catch(error => {
 
         document.getElementById("typing").style.display = "none";
 
         chatBox.innerHTML += `
-            <div class="bot-message">
-                ❌ Error connecting to chatbot.
-            </div>
+        <div class="bot-message">
+            ❌ Error connecting to chatbot.
+        </div>
         `;
 
         console.log(error);
@@ -86,8 +100,19 @@ function sendMessage() {
 
 }
 
-// Voice Input
-const micBtn = document.getElementById("micBtn");
+// -------------------- Enter Key --------------------
+
+document.getElementById("message").addEventListener("keypress", function(e){
+
+    if(e.key === "Enter"){
+
+        sendMessage();
+
+    }
+
+});
+
+// -------------------- Voice Input --------------------
 
 if ("webkitSpeechRecognition" in window) {
 
@@ -95,36 +120,41 @@ if ("webkitSpeechRecognition" in window) {
 
     recognition.lang = "en-IN";
 
-    micBtn.addEventListener("click", function () {
+    recognition.continuous = false;
+
+    recognition.interimResults = false;
+
+    document.getElementById("micBtn").addEventListener("click", function(){
+
         recognition.start();
+
     });
 
-    recognition.onresult = function (event) {
+    recognition.onresult = function(event){
+
         document.getElementById("message").value =
-            event.results[0][0].transcript;
+        event.results[0][0].transcript;
+
     };
 
 }
 
-// Enter Key
-document.getElementById("message").addEventListener("keypress", function(e){
+// -------------------- Clear Chat --------------------
 
-    if(e.key==="Enter"){
-        sendMessage();
-    }
-
-});
-
-// Clear Chat
 function clearChat(){
 
-    document.getElementById("chat-box").innerHTML="";
+    if(confirm("Clear chat window?")){
 
-    localStorage.removeItem("chatHistory");
+        document.getElementById("chat-box").innerHTML="";
+
+        localStorage.removeItem("chatHistory");
+
+    }
 
 }
 
-// Dark Mode
+// -------------------- Dark Mode --------------------
+
 function toggleTheme(){
 
     document.body.classList.toggle("dark-mode");

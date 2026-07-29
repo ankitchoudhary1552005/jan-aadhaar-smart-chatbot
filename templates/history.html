@@ -1,130 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Jan Aadhaar Chat History</title>
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
 <style>
 
 body{
-    font-family:Arial, sans-serif;
     background:#f4f4f4;
-    margin:0;
-    padding:20px;
-}
-
-h1{
-    text-align:center;
-}
-
-.top{
-    text-align:center;
-    margin:20px 0;
-}
-
-.btn{
-    display:inline-block;
-    padding:10px 18px;
-    color:white;
-    text-decoration:none;
-    border-radius:6px;
-    margin:5px;
-    font-weight:bold;
-}
-
-.back{
-    background:#0066ff;
-}
-
-.pdf{
-    background:#0b9b0b;
-}
-
-.clear{
-    background:#e60000;
-}
-
-#searchInput{
-    width:100%;
-    padding:12px;
-    border-radius:6px;
-    border:1px solid #ccc;
-    margin-bottom:20px;
-    font-size:16px;
-    box-sizing:border-box;
 }
 
 .card{
-    background:white;
-    padding:15px;
-    margin-bottom:18px;
-    border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,.15);
-}
-
-.card h3{
-    margin-top:0;
-    color:#333;
-}
-
-.card p{
-    margin:8px 0;
-    word-wrap:break-word;
-    white-space:pre-wrap;
-}
-
-.delete{
-    color:red;
-    text-decoration:none;
-    font-weight:bold;
-}
-
-.delete:hover{
-    text-decoration:underline;
-}
-
-.total{
-    text-align:center;
-    font-size:24px;
-    margin:20px 0;
-}
-
-.empty{
-    text-align:center;
-    font-size:20px;
-    color:gray;
-    margin-top:50px;
+    margin-bottom:20px;
 }
 
 </style>
 
 </head>
+
 <body>
 
-<h1>📜 Jan Aadhaar Chat History</h1>
+<div class="container mt-4">
+
+<h2 class="text-center mb-4">
+📜 Jan Aadhaar Chat History
+</h2>
+
+<div class="text-center mb-3">
 
 <input
 type="text"
 id="searchInput"
-placeholder="🔍 Search chats..."
+class="form-control w-50 mx-auto"
+placeholder="🔍 Search Chat..."
 onkeyup="searchChat()">
 
-<div class="top">
+</div>
 
-<h2>Total Chats : {{ total }}</h2>
+<div class="text-center mb-4">
 
-<a href="/chat" class="btn back">⬅ Back to Chat</a>
+<h5>
+Total Chats :
+<span class="badge bg-primary">
+{{ total }}
+</span>
+</h5>
 
-<a href="/download_pdf" class="btn pdf">
-📄 Download PDF
+<a href="/dashboard" class="btn btn-primary">
+🏠 Dashboard
 </a>
 
-<a href="/clear"
-class="btn clear"
+<a href="/chat" class="btn btn-success">
+💬 Chat
+</a>
+
+<a href="/download_pdf" class="btn btn-danger">
+📄 PDF
+</a>
+
+<a href="/download_excel" class="btn btn-warning">
+📊 Excel
+</a>
+
+<a
+href="/clear"
+class="btn btn-dark"
 onclick="return confirm('Delete all chats?')">
+
 🗑 Clear History
+
 </a>
 
 </div>
@@ -133,22 +83,42 @@ onclick="return confirm('Delete all chats?')">
 
 {% for chat in chats %}
 
-<div class="card search-card">
+<div class="card search-card shadow">
 
-<h3>👤 {{ chat[1] }}</h3>
+<div class="card-body">
 
-<p><b>User Message:</b><br>{{ chat[2] }}</p>
+<h5 class="card-title">
+👤 {{ chat[1] }}
+</h5>
 
-<p><b>Bot Reply:</b><br>{{ chat[3] }}</p>
+<p>
+<b>User :</b><br>
+{{ chat[2] }}
+</p>
 
-<p><b>Date & Time:</b> {{ chat[4] }}</p>
+<p>
+<b>Bot :</b><br>
+{{ chat[3] }}
+</p>
+
+<p>
+
+<b>Date & Time :</b>
+
+{{ chat[4] }}
+
+</p>
 
 <a
-class="delete"
 href="/delete/{{ chat[0] }}"
+class="btn btn-danger btn-sm"
 onclick="return confirm('Delete this chat?')">
-❌ Delete
+
+Delete
+
 </a>
+
+</div>
 
 </div>
 
@@ -156,11 +126,15 @@ onclick="return confirm('Delete this chat?')">
 
 {% else %}
 
-<div class="empty">
-No chat history found.
+<div class="alert alert-warning text-center">
+
+No Chat History Found
+
 </div>
 
 {% endif %}
+
+</div>
 
 <script>
 
@@ -178,7 +152,9 @@ if(text.indexOf(input)>-1){
 
 card.style.display="block";
 
-}else{
+}
+
+else{
 
 card.style.display="none";
 
@@ -191,4 +167,5 @@ card.style.display="none";
 </script>
 
 </body>
+
 </html>

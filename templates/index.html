@@ -1,12 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Jan Aadhaar Smart Chatbot</title>
+<title>Jan Aadhaar AI Chatbot</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<style>
+
+body{
+    background:#f4f4f4;
+    font-family:Arial, sans-serif;
+    transition:.3s;
+}
+
+.dark-mode{
+    background:#1e1e1e;
+    color:white;
+}
+
+.chat-container{
+
+    width:90%;
+    max-width:900px;
+
+    margin:25px auto;
+
+    background:white;
+
+    border-radius:15px;
+
+    box-shadow:0 0 15px rgba(0,0,0,.2);
+
+    overflow:hidden;
+
+}
+
+.dark-mode .chat-container{
+
+    background:#2b2b2b;
+
+}
+
+.header{
+
+    background:#0d6efd;
+
+    color:white;
+
+    padding:15px;
+
+}
+
+.header h3{
+
+    margin:0;
+
+}
+
+.menu{
+
+    margin-top:10px;
+
+}
+
+.menu a{
+
+    text-decoration:none;
+
+    margin-right:10px;
+
+}
+
+#chat-box{
+
+    height:420px;
+
+    overflow-y:auto;
+
+    padding:20px;
+
+    background:#fafafa;
+
+}
+
+.dark-mode #chat-box{
+
+    background:#222;
+
+}
+
+.user-message{
+
+    background:#d1ecff;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    margin-bottom:12px;
+
+    text-align:right;
+
+}
+
+.bot-message{
+
+    background:#e8ffe8;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    margin-bottom:12px;
+
+}
+
+.dark-mode .user-message{
+
+    background:#004d80;
+
+    color:white;
+
+}
+
+.dark-mode .bot-message{
+
+    background:#205c20;
+
+    color:white;
+
+}
+
+</style>
 
 </head>
 
@@ -16,60 +148,130 @@
 
 <div class="header">
 
-<h2>🤖 Jan Aadhaar Smart Chatbot</h2>
+<h3>
+🤖 Jan Aadhaar AI Chatbot
+</h3>
 
-<p>Welcome, <b>{{ username }}</b> 👋</p>
-
-<div class="top-buttons">
-
-<a href="/dashboard">
-<button>📊 Dashboard</button>
-</a>
-
-<a href="/history">
-<button>📜 History</button>
-</a>
-
-<button onclick="toggleTheme()" id="themeBtn">
-🌙 Dark Mode
-</button>
-
-<button onclick="clearChat()">
-🗑 Clear Chat
-</button>
-
-<a href="/logout">
-    <button>🚪 Logout</button>
-</a>
-
-</div>
-
-</div>
-
-<div id="chat-box"></div>
-
-<p id="typing" style="display:none;">
-🤖 Bot is typing...
+<p>
+Welcome,
+<b>{{ username }}</b>
 </p>
 
-<div class="input-area">
+<div class="menu">
+
+<a href="/dashboard" class="btn btn-warning btn-sm">
+🏠 Dashboard
+</a>
+
+<a href="/history" class="btn btn-success btn-sm">
+📜 History
+</a>
+
+<a href="/logout" class="btn btn-danger btn-sm">
+🚪 Logout
+</a>
+
+<button
+id="themeBtn"
+class="btn btn-dark btn-sm"
+onclick="toggleTheme()">
+
+🌙 Dark Mode
+
+</button>
+
+</div>
+
+</div>
+
+<!-- ================= Chat Box ================= -->
+
+<div id="chat-box">
+
+<div class="bot-message">
+
+🤖 <b>Bot:</b><br>
+
+Hello <b>{{ username }}</b> 👋<br>
+Welcome to Jan Aadhaar AI Chatbot.<br><br>
+
+How can I help you today?
+
+</div>
+
+</div>
+
+<!-- Typing Animation -->
+
+<div
+id="typing"
+style="display:none;padding-left:20px;padding-bottom:10px;color:gray;">
+
+🤖 Bot is typing...
+
+</div>
+
+<!-- Input Area -->
+
+<div class="p-3 border-top">
+
+<div class="input-group">
 
 <input
 type="text"
 id="message"
-placeholder="Ask anything about Jan Aadhaar...">
+class="form-control"
+placeholder="Type your message here...">
 
-<button id="micBtn">
+<button
+class="btn btn-primary"
+onclick="sendMessage()">
+
+Send
+
+</button>
+
+<button
+id="micBtn"
+class="btn btn-success">
+
 🎤
+
 </button>
 
-<button onclick="sendMessage()">
-📤 Send
+<button
+class="btn btn-danger"
+onclick="clearChat()">
+
+🗑
+
 </button>
 
 </div>
 
 </div>
+
+<!-- Footer -->
+
+<div class="text-center p-3 bg-light">
+
+<p class="mb-1">
+© 2026 Jan Aadhaar AI Chatbot
+</p>
+
+<p class="text-muted">
+Developed using Flask + Python + Gemini AI
+</p>
+
+</div>
+
+</div>
+
+<!-- Bootstrap JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Your Script -->
 
 <script src="{{ url_for('static', filename='script.js') }}"></script>
 
